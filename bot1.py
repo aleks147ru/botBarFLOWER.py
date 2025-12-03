@@ -441,9 +441,10 @@ async def choose_payment(msg: Message, state: FSMContext):
                 data.get("region", ""), data.get("address", ""), data.get("date", ""), data.get("time", "")
             )
             total += delivery_price
+        order_lines = [f"{item['emoji']} {item['name']} — {item['price']} руб." for item in cart]
         order_text = (
             f"Ваш заказ:\n"
-            f"{chr(10).join([f'{f['emoji']} {f['name']} — {f['price']} руб.' for f in cart])}"
+            f"{chr(10).join(order_lines)}"
             + (f"\nДоставка: {delivery_price} руб." if delivery_price else "") +
             f"\nИтого к оплате: {total} руб.\n\n"
             f"Подтвердите заказ?"
