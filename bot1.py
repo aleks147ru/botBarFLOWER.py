@@ -15,7 +15,7 @@ from aiogram.filters import StateFilter
 API_TOKEN = "8138182283:AAHSnvgi5j4ksM2--jr1b31SsVpI2qGF-YM"
 PAYMENT_TOKEN = "YOUR_PAYMENT_TOKEN"  # <-- замените на свой токен
 
-ADMINS = [1295147526, ]  # список ID админов
+ADMINS = [1295147526, 1235984904, ]  # список ID админов
 
 def is_admin(user_id):
     return user_id in ADMINS
