@@ -1,4 +1,3 @@
-
 import asyncio
 import json
 import os
@@ -66,7 +65,11 @@ load_users()
 
 carts = {}
 
-CATEGORIES = ["Букеты", "Цветы в розницу", "Опт"]
+CATEGORIES = [
+    "Букеты 💐",
+    "Цветы в розницу 🌸",
+    "Опт 📦"
+]
 category_kb = ReplyKeyboardMarkup(
     keyboard=[[KeyboardButton(text=cat)] for cat in CATEGORIES],
     resize_keyboard=True,
@@ -75,8 +78,8 @@ category_kb = ReplyKeyboardMarkup(
 
 main_menu = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="Каталог")],
-        [KeyboardButton(text="О нас"), KeyboardButton(text="Контакты")]
+        [KeyboardButton(text="Каталог 🛍")],
+        [KeyboardButton(text="О нас ℹ️"), KeyboardButton(text="Контакты 📞")]
     ],
     resize_keyboard=True
 )
@@ -91,7 +94,7 @@ pickup_kb = ReplyKeyboardMarkup(
 
 payment_kb = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="Оплата при получении"), KeyboardButton(text="Онлайн оплата")]
+        [KeyboardButton(text="Оплата при получении 💵"), KeyboardButton(text="Онлайн оплата 💳")]
     ],
     resize_keyboard=True,
     one_time_keyboard=True
@@ -207,16 +210,16 @@ async def start(msg: Message):
         reply_markup=main_menu
     )
 
-@dp.message(lambda m: m.text == "Каталог")
+@dp.message(lambda m: m.text and m.text.startswith("Каталог"))
 async def menu_catalog(msg: Message, state: FSMContext):
     await msg.answer("Выберите категорию:", reply_markup=category_kb_with_back)
     await state.set_state("waiting_for_catalog_category")
 
-@dp.message(lambda m: m.text == "О нас")
+@dp.message(lambda m: m.text and m.text.startswith("О нас"))
 async def about(msg: Message):
-    await msg.answer('- Круглосуточная доставка цветов по г. Тосно, Тосненскому району и Санкт-Петербургу \n-Сотрудничаем напрямую с плантациями Ленинградской области и Краснодарского края\n-Осуществляем корпоративные заказы (возможно заключение договора)\n-Полностью дистанционное оформление заказа\n-Мини опт для всех (условия уточняйте у менеджера)\n\nОплата\nПосле согласования всех нюансов заказа, необходимо произвести оплату.  Если заказан товар из наличия с экспресс доставкой, оплата возможна при получении наличными или переводом.\nДоставка\nДОСТАВКА осуществляется 24 часа! Доставка по г. Тосно от 250₽ Доставка по Тосненскому району, Ленинградской области, г. Санкт-Петербургу согласна тарифам Яндекса или другой службы доставки.  Временной интервал для доставки по Тосно - 30 минут По Ленинградской области и г. Санкт-Петербургу - 2-3 часа Экспресс доставка (только по г. Тосно) - доставка товара из наличия в течение часа с момента заказа - от 250₽ руб. Ночной тариф (с 22-9:00) по Тосно - от 500₽\nВозврат\n❗️Проверяйте качество цветов при получении Цветы являются живым товаром.  В соответствии с Законом Российской Федерации «О защите прав потребителей» от 07.02.1992 № 2300-1 и Постановлением Правительства Российской Федерации от 19.01.1998 № 55 срезанные цветы и горшечные растения обмену и возврату не подлежат (указаны в Перечне непродовольственных товаров надлежащего качества, не подлежащих возврату или обмену). Покупатель имеет право отказаться от получения товара в момент доставки, если доставлен товар ненадлежащего качества (на основании п.3 ст. 497 ГК РФ, статья 21 Закона "О защите прав потребителей").')
+    await msg.answer('- Круглосуточная доставка цветов по г. Тосно, Тосненскому району и Санкт-Петербургу \n-Сотрудничаем напрямую с плантациями Ленинградской области и Краснодарского края\n-Осуществляем корпоративные заказы (возможно заключение договора)\n-Полностью дистанционное оформление заказа\n-Мини опт для всех (условия уточняйте у менеджера)\n\nОплата\nПосле согласования всех нюансов заказа, необходимо произвести оплату.  Если заказан товар из наличия с экспресс доставкой, оплата возможна при получении наличными или переводом.\nДоставка\nДОСТАВКА осуществляется 24 часа! Доставка по г. Тосно от 250₽ Доставка по Тосненскому району, Ленинградской области, г. Санкт-Петербургу согласна тарифам Яндекса или другой службы доставки.  Временной интервал для доставки по Тосно - 30 минут По Ленинградской области и г. Санкт-Петербурге - 2-3 часа Экспресс доставка (только по г. Тосно) - доставка товара из наличия в течение часа с момента заказа - от 250₽ руб. Ночной тариф (с 22-9:00) по Тосно - от 500₽\nВозврат\n❗️Проверяйте качество цветов при получении Цветы являются живым товаром.  В соответствии с Законом Российской Федерации «О защите прав потребителей» от 07.02.1992 № 2300-1 и Постановлением Правительства Российской Федерации от 19.01.1998 № 55 срезанные цветы и горшечные растения обмену и возврату не подлежат (указаны в Перечне непродовольственных товаров надлежащего качества, не подлежащих возврату или обмену). Покупатель имеет право отказаться от получения товара в момент доставки, если доставлен товар ненадлежащего качества (на основании п.3 ст. 497 ГК РФ, статья 21 Закона "О защите прав потребителей").')
 
-@dp.message(lambda m: m.text == "Контакты")
+@dp.message(lambda m: m.text and m.text.startswith("Контакты"))
 async def contacts(msg: Message):
     await msg.answer("Телефон: +79201860779\nVK: https://vk.com/bar_flower\nWhatsApp:https://clck.ru/3Nh8rH")
 
@@ -226,20 +229,25 @@ async def show_category(msg: Message, state: FSMContext):
         await msg.answer("Главное меню:", reply_markup=main_menu)
         await state.clear()
         return
-    if msg.text not in CATEGORIES:
-        await msg.answer("Пожалуйста, выберите категорию кнопкой.")
-        return
-    await state.update_data(selected_category=msg.text)
-    ranges = PRICE_RANGES[msg.text]
-    price_range_kb = ReplyKeyboardMarkup(
-        keyboard=[[KeyboardButton(text=label)] for label, _, _ in ranges] + [[KeyboardButton(text="⬅️ Назад")]],
-        resize_keyboard=True,
-        one_time_keyboard=True
-    )
-    await msg.answer("Выберите диапазон цен:", reply_markup=price_range_kb)
-    await state.set_state("waiting_for_price_range")
+    # Получаем название категории без смайлика
+    def category_key(text):
+        # Убираем последний пробел и всё после него (смайлик)
+        return text.rsplit(' ', 1)[0]
+    for cat in CATEGORIES:
+        if msg.text == cat:
+            key = category_key(cat)
+            await state.update_data(selected_category=key)
+            ranges = PRICE_RANGES[key]
+            price_range_kb = ReplyKeyboardMarkup(
+                keyboard=[[KeyboardButton(text=label)] for label, _, _ in ranges] + [[KeyboardButton(text="⬅️ Назад")]],
+                resize_keyboard=True,
+                one_time_keyboard=True
+            )
+            await msg.answer("Выберите диапазон цен:", reply_markup=price_range_kb)
+            await state.set_state("waiting_for_price_range")
+            return
+    await msg.answer("Пожалуйста, выберите категорию кнопкой.")
 
-# --- Обновлённый обработчик выбора диапазона цен ---
 @dp.message(StateFilter("waiting_for_price_range"))
 async def show_price_range(msg: Message, state: FSMContext):
     if msg.text == "⬅️ Назад":
@@ -260,7 +268,7 @@ async def show_price_range(msg: Message, state: FSMContext):
     min_price, max_price = selected
     items = [
         (idx, f) for idx, f in enumerate(flowers)
-        if f.get("category") == category and min_price <= int(f.get("price", 0)) < max_price
+        if category == f.get("category", "").rsplit(' ', 1)[0] and min_price <= int(f.get("price", 0)) < max_price
     ]
     if not items:
         await msg.answer("В этом диапазоне нет товаров.", reply_markup=main_menu)
@@ -421,37 +429,36 @@ async def choose_payment(msg: Message, state: FSMContext):
         await msg.answer("Введите время (например, 15:30):", reply_markup=with_back_kb(ReplyKeyboardMarkup(keyboard=[], resize_keyboard=True)))
         await state.set_state(OrderFSM.choosing_time)
         return
-    if msg.text not in ["Оплата при получении", "Онлайн оплата"]:
-        await msg.answer("Пожалуйста, выберите способ оплаты кнопкой.")
-        return
-    await state.update_data(payment=msg.text)
-    data = await state.get_data()
-    user_id = msg.from_user.id
-    cart = carts.get(user_id, [])
-    total = sum(int(f["price"]) for f in cart)
-    delivery_price = 0
-    if data.get("delivery") == "Доставка":
-        delivery_price = get_delivery_price(
-            data.get("region", ""), data.get("address", ""), data.get("date", ""), data.get("time", "")
+    if msg.text.startswith("Оплата при получении") or msg.text.startswith("Онлайн оплата"):
+        await state.update_data(payment=msg.text)
+        data = await state.get_data()
+        user_id = msg.from_user.id
+        cart = carts.get(user_id, [])
+        total = sum(int(f["price"]) for f in cart)
+        delivery_price = 0
+        if data.get("delivery") == "Доставка":
+            delivery_price = get_delivery_price(
+                data.get("region", ""), data.get("address", ""), data.get("date", ""), data.get("time", "")
+            )
+            total += delivery_price
+        order_text = (
+            f"Ваш заказ:\n"
+            f"{chr(10).join([f'{f['emoji']} {f['name']} — {f['price']} руб.' for f in cart])}"
+            + (f"\nДоставка: {delivery_price} руб." if delivery_price else "") +
+            f"\nИтого к оплате: {total} руб.\n\n"
+            f"Подтвердите заказ?"
         )
-        total += delivery_price
-
-    order_text = (
-        f"Ваш заказ:\n"
-        f"{chr(10).join([f'{f['emoji']} {f['name']} — {f['price']} руб.' for f in cart])}"
-        + (f"\nДоставка: {delivery_price} руб." if delivery_price else "") +
-        f"\nИтого к оплате: {total} руб.\n\n"
-        f"Подтвердите заказ?"
-    )
-    kb = InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="✅ Подтвердить", callback_data="confirm_order")],
-            [InlineKeyboardButton(text="❌ Отмена", callback_data="cancel_order")]
-        ]
-    )
-    await msg.answer(order_text, reply_markup=kb)
-    await state.update_data(total=total, delivery_price=delivery_price, cart=cart)
-    await state.set_state(OrderFSM.waiting_for_order_confirm)
+        kb = InlineKeyboardMarkup(
+            inline_keyboard=[
+                [InlineKeyboardButton(text="✅ Подтвердить", callback_data="confirm_order")],
+                [InlineKeyboardButton(text="❌ Отмена", callback_data="cancel_order")]
+            ]
+        )
+        await msg.answer(order_text, reply_markup=kb)
+        await state.update_data(total=total, delivery_price=delivery_price, cart=cart)
+        await state.set_state(OrderFSM.waiting_for_order_confirm)
+    else:
+        await msg.answer("Пожалуйста, выберите способ оплаты кнопкой.")
 
 @dp.callback_query(F.data == "confirm_order")
 async def confirm_order(callback: CallbackQuery, state: FSMContext):
@@ -724,7 +731,9 @@ async def do_broadcast(msg: Message, state: FSMContext):
     await msg.answer(f"Рассылка завершена. Отправлено {count} пользователям.")
     await state.clear()
 
+# --- ДОБАВЛЕНО ДЛЯ ПРАВИЛЬНОГО ЗАПУСКА POLLING ---
 async def main():
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
